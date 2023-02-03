@@ -20,17 +20,14 @@ export default {
     return {
       defaultOptions: {
         pageSizes: [10, 20, 50, 100, 400],
-        layout: 'total, sizes, prev, pager, next, jumper',
-        total: 100
+        layout: 'sizes, prev, pager, next, jumper',
+        total: 10
       },
       defaultOnchange: {
         'size-change': this.handleSizeChange,
         'current-change': this.handleCurrentChange
       }
     }
-  },
-  created() {
-    this.defaultOptions = { ...this.defaultOptions, ...this.tableOptions?.pagination || {}}
   },
   methods: {
     handleSizeChange(val) {
@@ -49,8 +46,8 @@ export default {
         <el-pagination
           currentPage={ this.requestData().currentPage}
           pageSize={this.requestData().pageSize}
-          {...{ attrs: { ...this.defaultOptions }}}
-          {...{ on: { ...this.defaultOnchange }}}
+          {...{ attrs: { ...this.defaultOptions, ...this.tableOptions?.pagination || {}}}}
+          {...{ on: { ...this.defaultOnchange, ...this.tableOptions?.pagination?.events }}}
         >
         </el-pagination>
       </div>

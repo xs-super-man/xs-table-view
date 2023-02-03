@@ -1,5 +1,24 @@
-# xs-table-view
-一个基于vue2+element-ui二次封装的组件。基于render函数和jsx开发。
-只需要简单的配置一个对象，就可以得到一个功能丰富的表格。
+# eletable
 
-大家可以加群一起交流学习 wx:shuai_520_hong
+## Project setup
+```
+yarn install
+```
+
+### Compiles and hot-reloads for development
+```
+yarn serve
+```
+
+### Compiles and minifies for production
+```
+yarn build
+```
+
+### Lints and fixes files
+```
+yarn lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

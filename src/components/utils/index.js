@@ -14,10 +14,3 @@ export function deepClone(obj) {
   return objClone
 }
 
-export function tableRefresh(fn, callback) {
-  fn().then(res => {
-    callback()
-  }).catch(err => {
-    callback(err)
-  })
-}

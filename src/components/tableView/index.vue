@@ -1,8 +1,7 @@
 <script>
-import TableView from './table/index'
-import Search from './search/index'
+import TableView from './table/index.vue'
+import Search from './search/index.vue'
 import './popup/index.js'
-import { deepClone } from '../utils/index.js'
 export default {
   name: 'XsTableView',
   components: {
@@ -17,7 +16,8 @@ export default {
         this.requestData = { ...this.requestData, ...params }
       },
       tableRefresh: this.tableRefresh,
-      tableOptions: this.tableOptions
+      tableOptions: this.tableOptions,
+      treeRefresh: this.treeRefresh
     }
   },
   props: {
@@ -46,15 +46,15 @@ export default {
       },
       tableData: [],
       searchList: [],
-      total: 0
+      total: 0,
+      show: 'none'
     }
   },
   async created() {
-    const arr = this.tableList.filter(item => item.search).map(item => {
+    this.searchList = this.tableList.filter(item => item.search).map(item => {
       item.search.value = item.search.value || ''
       return item
     })
-    this.searchList = deepClone(arr)
     for (const key in this.request) {
       if (key === 'getTableList') {
         await this.getTableList()
@@ -69,7 +69,7 @@ export default {
     },
     searchData() {
       return this.searchList.reduce((pre, cur) => {
-        if (cur.search.type === 'date') {
+        if (cur.search?.type === 'date') {
           if (cur.searchKey && Object.prototype.toString.call(cur.searchKey) === '[object Object]') {
             Object.keys(cur.searchKey).forEach((item, index) => {
               pre[item] = cur.search.value[index]
@@ -89,11 +89,23 @@ export default {
       }).catch(() => {
         typeof callback === 'function' && callback('error')
       })
+    },
+    deepRefresh(data, list) {
+      list.forEach((item, index) => {
+        if (item.children?.length) {
+          this.deepRefresh(data[index].children, item.children)
+        } else {
+          item.tableShow = data[index].tableShow
+        }
+      })
+    },
+    treeRefresh(data) {
+      this.deepRefresh(data, this.tableList)
     }
   },
   render(h) {
     return (
-      <div>
+      <div class='xs-table-view'>
         {!this.tableOptions?.searchShow
           ? <Search
             searchList={this.searchList}
@@ -121,10 +133,13 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 *{
   margin: 0;
   padding:0
+}
+.xs-table-view{
+  margin: 40px 20px 30px 20px;
+  box-sizing: border-box;
 }
 </style>

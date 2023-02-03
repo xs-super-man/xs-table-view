@@ -56,10 +56,32 @@ export default {
 
   },
   render(h) {
+    // return !this.column.tableShow ? h('el-table-column', {
+    //   attrs: {
+    //     formatter: this.column.render
+    //       ? (...agr) => this.formatterRender(h, ...agr) : this.formatter,
+    //     ...this.defaultOptions,
+    //     ...this.column.options
+
+    //   },
+    //   scopedSlots: this.scopedSlot,
+    //   on: {
+
+    //   },
+    //   key: this.column.name
+    // }, [
+    //   this.componentRender() ? this.scopedSlot.scoped
+    //     : this.column.children?.length > 0
+    //       ? this.column.children.map(item => (
+    //         <TableColumn
+    //           column={item}
+    //         ></TableColumn>
+    //       )) : ''
+    // ]) : null
     return (
       !this.column.tableShow
         ? <el-table-column
-          header
+          key={this.column.name}
           formatter={this.column.render
             ? (...agr) => this.formatterRender(h, ...agr) : this.formatter}
           {...{ attrs: { ...this.defaultOptions, ...this.column.options }} }
@@ -74,7 +96,7 @@ export default {
               )) : ''
           }
         </el-table-column>
-        : ''
+        : null
     )
   }
 }

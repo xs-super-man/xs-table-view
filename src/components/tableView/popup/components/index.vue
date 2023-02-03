@@ -72,12 +72,10 @@ export default {
     },
     data(newVal) {
       this.popupList.forEach(item => {
-        item['popup']['value'] = item.popup.value || newVal?.row[item.key] || ''
+        item['popup']['value'] = newVal?.row[item.key] || ''
       })
     }
 
-  },
-  created() {
   },
   methods: {
     cancel() {
@@ -110,7 +108,7 @@ export default {
         width={this.width}
         visible={this.value}
         before-close={this.cancel}>
-        {this.popupList.map((item) => item.popup.popupRender ? item.popup.popupRender(h)
+        {this.popupList.map((item) => item.popup.popupRender ? item.popup.popupRender(h, this.data)
           : popupMap.call(this, h, item))}
         <span slot='footer' class='dialog-footer'>
           <el-button on-click={this.cancel}>{this.cancelText}</el-button>
