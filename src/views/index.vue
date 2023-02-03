@@ -73,9 +73,10 @@ export default {
             type: 'select',
             value: '',
             options: {
-
+              // 可配置element select组件中任何属性
             },
             events: {
+              // 可配置element select组件中任何事件
               change: (val) => {console.log(val, '-------click')}
             },
             list: [
@@ -89,21 +90,31 @@ export default {
               }
             ]
           },
+          // children可设置多级表头
           children: [
             {
               key: 'id',
               name: '用户id'
             },
             {
-              key: 'nickName',
-              name: '昵称',
-              tableShow: true
+              key: 'address',
+              name: '地址',
+              // 是否隐藏当前列
+              tableShow: false,
+              popup: {
+                // 是否隐藏在弹窗中显示
+                popupShow: false
+              }
             },
             {
               key: 'sex',
               name: '性别',
-              render(h, row) {
-                return h('span', row['sex'])
+              // 自定义渲染
+              // 参数有 row, column, cellValue, index
+              // h为vue内置函数，组件内暴露出来可供渲染
+              render(h, { row }) {
+                const sex = row['sex'] ? '男' : '女'
+                return h('span', sex)
               }
             }
           ]
@@ -153,6 +164,8 @@ export default {
               popup: {
                 value: '',
                 arr: [{ label: '选项1' }, { label: '选项2' }, { label: '选项3' }],
+                // 是否隐藏在弹窗中显示
+                popupShow: false,
                 /*
                  popupRender 自定义弹窗渲染
                  h渲染函数
